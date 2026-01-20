@@ -33,3 +33,21 @@ test('Update an order with student role should not be allowed, code 403', async 
   console.log(response)
   expect(response.status()).toBe(403)
 })
+
+test('Student cannot change order status to DELIVERED', async ({ request }) => {
+  const jwt = await fetchJwt(request)
+  const orderId = await createOrder(request, jwt)
+
+  const response = await updateAnOrder(request, jwt, orderId, 'DELIVERED')
+  expect(response.status()).toBe(403)
+})
+
+test('Create two orders and validate get all orders', async ({ request }) => {
+  const jwt = await fetchJwt(request)
+
+  await createOrder(request, jwt)
+  await createOrder(request, jwt)
+
+  const orders = await getAllOrders(request, jwt)
+  expect(orders.length).toBeGreaterThanOrEqual(2)
+})
