@@ -50,16 +50,16 @@ export async function getOrderById(
     data.id,
   )
 }
+
 export async function getAllOrders(request: APIRequestContext, jwt: string): Promise<OrderDto[]> {
   const response = await request.get(`${serviceURL}${orderPath}`, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
-  })
-  expect(response.status()).toBe(StatusCodes.OK)
-  const data = await response.json()
-
-  return data.map(
+  });
+  expect(response.status()).toBe(StatusCodes.OK);
+  const data = await response.json();
+  const orders = data.map(
     (order: OrderDto) =>
       new OrderDto(
         order.status,
@@ -69,8 +69,10 @@ export async function getAllOrders(request: APIRequestContext, jwt: string): Pro
         order.comment,
         order.id,
       ),
-  )
+  );
+  return orders;
 }
+
 
 export async function deleteAnOrder(
   request: APIRequestContext,
@@ -81,13 +83,13 @@ export async function deleteAnOrder(
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
-  })
-  expect(response.status()).toBe(StatusCodes.OK)
-  const data = await response.json()
-  return data
+  });
+  expect(response.status()).toBe(StatusCodes.OK);
+  const data = await response.json();
+  return data;
 }
 
-export async function updateOrder(
+export async function updateAnOrder(
   request: APIRequestContext,
   jwt: string,
   orderId: number,
@@ -97,9 +99,12 @@ export async function updateOrder(
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
-    data: { status: status },
-  })
+    data: {
+      status: status,
+    },
+  });
   //expect(response.status()).toBe(StatusCodes.OK);
-  // const data = await response.json();
-  return response
+  //const data = await response.json();
+  //return data;
+  return response;
 }
