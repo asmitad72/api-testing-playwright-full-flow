@@ -55,9 +55,9 @@ export async function getAllOrders(request: APIRequestContext, jwt: string): Pro
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
-  });
-  expect(response.status()).toBe(StatusCodes.OK);
-  const data = await response.json();
+  })
+  expect(response.status()).toBe(StatusCodes.OK)
+  const data = await response.json()
 
   return data.map(
     (order: OrderDto) =>
@@ -72,25 +72,34 @@ export async function getAllOrders(request: APIRequestContext, jwt: string): Pro
   )
 }
 
-export async function deleteAnOrder(request: APIRequestContext, jwt: string, orderId: number): Promise<boolean> {
+export async function deleteAnOrder(
+  request: APIRequestContext,
+  jwt: string,
+  orderId: number,
+): Promise<boolean> {
   const response = await request.delete(`${serviceURL}${orderPath}/${orderId}`, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
-  });
-  expect(response.status()).toBe(StatusCodes.OK);
-  const data = await response.json();
-  return data;
+  })
+  expect(response.status()).toBe(StatusCodes.OK)
+  const data = await response.json()
+  return data
 }
 
-export async function updateOrder(request: APIRequestContext, jwt: string, orderId: number,status :string): Promise<any> {
+export async function updateOrder(
+  request: APIRequestContext,
+  jwt: string,
+  orderId: number,
+  status: string,
+): Promise<any> {
   const response = await request.put(`${serviceURL}${orderPath}/${orderId}/status`, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
-    data :  { "status": status}
-  });
+    data: { status: status },
+  })
   //expect(response.status()).toBe(StatusCodes.OK);
- // const data = await response.json();
-  return response;
+  // const data = await response.json();
+  return response
 }
