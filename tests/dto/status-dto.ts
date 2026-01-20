@@ -4,5 +4,3 @@ export enum StatusDto {
   INPROGRESS = 'INPROGRESS',
   DELIVERED = 'DELIVERED',
 }
-
-

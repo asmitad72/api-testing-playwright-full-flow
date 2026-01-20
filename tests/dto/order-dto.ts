@@ -1,4 +1,4 @@
-import { StatusDto } from "./status-dto";
+import { StatusDto } from './status-dto'
 
 export class OrderDto {
   status: StatusDto

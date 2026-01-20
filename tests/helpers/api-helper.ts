@@ -56,9 +56,9 @@ export async function getAllOrders(request: APIRequestContext, jwt: string): Pro
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
-  });
-  expect(response.status()).toBe(StatusCodes.OK);
-  const data = await response.json();
+  })
+  expect(response.status()).toBe(StatusCodes.OK)
+  const data = await response.json()
   const orders = data.map(
     (order: OrderDto) =>
       new OrderDto(
@@ -69,10 +69,9 @@ export async function getAllOrders(request: APIRequestContext, jwt: string): Pro
         order.comment,
         order.id,
       ),
-  );
-  return orders;
+  )
+  return orders
 }
-
 
 export async function deleteAnOrder(
   request: APIRequestContext,
@@ -83,10 +82,10 @@ export async function deleteAnOrder(
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
-  });
-  expect(response.status()).toBe(StatusCodes.OK);
-  const data = await response.json();
-  return data;
+  })
+  expect(response.status()).toBe(StatusCodes.OK)
+  const data = await response.json()
+  return data
 }
 
 export async function updateAnOrder(
@@ -102,9 +101,9 @@ export async function updateAnOrder(
     data: {
       status: status,
     },
-  });
+  })
   //expect(response.status()).toBe(StatusCodes.OK);
   //const data = await response.json();
   //return data;
-  return response;
+  return response
 }
