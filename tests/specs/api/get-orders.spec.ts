@@ -74,4 +74,14 @@ test.describe('Courier role actions', () => {
 
     expect(response.status()).toBe(200)
   })
+
+  test('Assign order to courier', async ({ request }) => {
+    const jwt = await fetchJwt(request)
+    const jwtCourier = await fetchCourierJwt(request)
+    const orderID = await createOrder(request, jwt)
+    const response = await assignOrder(request, jwtCourier, orderID)
+    const data = await response.json()
+    expect(response.status()).toBe(200)
+    expect(data.id).toBe(orderID)
+  })
 })
