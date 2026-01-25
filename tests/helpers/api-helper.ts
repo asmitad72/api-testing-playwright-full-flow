@@ -84,6 +84,31 @@ export async function getAllOrders(request: APIRequestContext, jwt: string): Pro
   return orders
 }
 
+export async function getAllCourierOrders(
+  request: APIRequestContext,
+  jwt: string,
+): Promise<OrderDto[]> {
+  const response = await request.get(`${serviceURL}${orderPath}/available`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  })
+  expect(response.status()).toBe(StatusCodes.OK)
+  const data = await response.json()
+  const orders = data.map(
+    (order: OrderDto) =>
+      new OrderDto(
+        order.status,
+        order.courierId,
+        order.customerName,
+        order.customerPhone,
+        order.comment,
+        order.id,
+      ),
+  )
+  return orders
+}
+
 export async function deleteAnOrder(
   request: APIRequestContext,
   jwt: string,
@@ -116,5 +141,19 @@ export async function updateAnOrder(
   //expect(response.status()).toBe(StatusCodes.OK);
   //const data = await response.json();
   //return data;
+  return response
+}
+
+export async function assignOrder(
+  request: APIRequestContext,
+  jwt: string,
+  orderId: number,
+): Promise<any> {
+  const response = await request.put(`${serviceURL}${orderPath}/${orderId}/assign`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  })
+
   return response
 }

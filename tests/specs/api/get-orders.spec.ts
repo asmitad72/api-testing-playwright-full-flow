@@ -6,11 +6,13 @@ import {
   fetchJwt,
   fetchCourierJwt,
   getAllOrders,
+  getAllCourierOrders,
+  assignOrder,
 } from '../../helpers/api-helper'
 
 test('Get all orders', async ({ request }) => {
   // get jwt token
-  const jwt = await fetchCourierJwt(request)
+  const jwt = await fetchJwt(request)
   // get all orders using jwt token
   const orders = await getAllOrders(request, jwt)
   expect(Array.isArray(orders))
@@ -19,7 +21,7 @@ test('Get all orders', async ({ request }) => {
 
 test('Delete an order', async ({ request }) => {
   // get jwt token
-  const jwt = await fetchCourierJwt(request)
+  const jwt = await fetchJwt(request)
   const orderId = await createOrder(request, jwt)
   const response = await deleteAnOrder(request, jwt, orderId)
   console.log(response)
@@ -28,7 +30,7 @@ test('Delete an order', async ({ request }) => {
 
 test('Update an order with student role should not be allowed, code 403', async ({ request }) => {
   // get jwt token
-  const jwt = await fetchCourierJwt(request)
+  const jwt = await fetchJwt(request)
   const orderId = await createOrder(request, jwt)
   const response = await updateAnOrder(request, jwt, orderId, 'INPROGRESS')
   console.log(response)
@@ -51,4 +53,25 @@ test('Create two orders and validate get all orders', async ({ request }) => {
 
   const orders = await getAllOrders(request, jwt)
   expect(orders.length).toBeGreaterThanOrEqual(2)
+})
+// COURIER Tests
+
+test.describe('Courier role actions', () => {
+  test('Courier can get all orders', async ({ request }) => {
+    const jwt = await fetchCourierJwt(request)
+
+    const orders = await getAllCourierOrders(request, jwt)
+    expect(orders.length).toBeGreaterThan(0)
+  })
+
+  test('Courier can update order status', async ({ request }) => {
+    const jwt = await fetchJwt(request)
+    const jwtCourier = await fetchCourierJwt(request)
+
+    const orderId = await createOrder(request, jwt)
+    await assignOrder(request, jwtCourier, orderId)
+    const response = await updateAnOrder(request, jwtCourier, orderId, 'INPROGRESS')
+
+    expect(response.status()).toBe(200)
+  })
 })
