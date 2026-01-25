@@ -4,12 +4,13 @@ import {
   createOrder,
   deleteAnOrder,
   fetchJwt,
+  fetchCourierJwt,
   getAllOrders,
 } from '../../helpers/api-helper'
 
 test('Get all orders', async ({ request }) => {
   // get jwt token
-  const jwt = await fetchJwt(request)
+  const jwt = await fetchCourierJwt(request)
   // get all orders using jwt token
   const orders = await getAllOrders(request, jwt)
   expect(Array.isArray(orders))
@@ -18,7 +19,7 @@ test('Get all orders', async ({ request }) => {
 
 test('Delete an order', async ({ request }) => {
   // get jwt token
-  const jwt = await fetchJwt(request)
+  const jwt = await fetchCourierJwt(request)
   const orderId = await createOrder(request, jwt)
   const response = await deleteAnOrder(request, jwt, orderId)
   console.log(response)
@@ -27,7 +28,7 @@ test('Delete an order', async ({ request }) => {
 
 test('Update an order with student role should not be allowed, code 403', async ({ request }) => {
   // get jwt token
-  const jwt = await fetchJwt(request)
+  const jwt = await fetchCourierJwt(request)
   const orderId = await createOrder(request, jwt)
   const response = await updateAnOrder(request, jwt, orderId, 'INPROGRESS')
   console.log(response)

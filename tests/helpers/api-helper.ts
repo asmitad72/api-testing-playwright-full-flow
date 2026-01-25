@@ -5,11 +5,22 @@ import { OrderDto } from '../dto/order-dto'
 
 const serviceURL = 'https://backend.tallinn-learning.ee/'
 const loginPath = 'login/student'
+const loginPathCourier = "login/courier";
 const orderPath = 'orders'
 
 export async function fetchJwt(request: APIRequestContext): Promise<string> {
   const authResponse = await request.post(`${serviceURL}${loginPath}`, {
     data: LoginDto.createLoginWithCorrectData(),
+  })
+  if (authResponse.status() !== StatusCodes.OK) {
+    throw new Error(`Authorization failed. Status: ${authResponse.status()}`)
+  }
+  return await authResponse.text()
+}
+
+export async function fetchCourierJwt(request: APIRequestContext): Promise<string> {
+  const authResponse = await request.post(`${serviceURL}${loginPathCourier}`, {
+    data: LoginDto.createCourierLoginWithCorrectData(),
   })
   if (authResponse.status() !== StatusCodes.OK) {
     throw new Error(`Authorization failed. Status: ${authResponse.status()}`)
