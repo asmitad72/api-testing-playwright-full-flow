@@ -5,7 +5,7 @@ import { OrderDto } from '../dto/order-dto'
 
 const serviceURL = 'https://backend.tallinn-learning.ee/'
 const loginPath = 'login/student'
-const loginPathCourier = "login/courier";
+const loginPathCourier = 'login/courier'
 const orderPath = 'orders'
 
 export async function fetchJwt(request: APIRequestContext): Promise<string> {
