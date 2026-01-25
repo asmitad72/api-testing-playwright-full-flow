@@ -12,9 +12,7 @@ export async function fetchJwt(request: APIRequestContext): Promise<string> {
   const authResponse = await request.post(`${serviceURL}${loginPath}`, {
     data: LoginDto.createLoginWithCorrectData(),
   })
-  if (authResponse.status() !== StatusCodes.OK) {
-    throw new Error(`Authorization failed. Status: ${authResponse.status()}`)
-  }
+  expect(authResponse.status()).toBe(StatusCodes.OK)
   return await authResponse.text()
 }
 
@@ -22,9 +20,7 @@ export async function fetchCourierJwt(request: APIRequestContext): Promise<strin
   const authResponse = await request.post(`${serviceURL}${loginPathCourier}`, {
     data: LoginDto.createCourierLoginWithCorrectData(),
   })
-  if (authResponse.status() !== StatusCodes.OK) {
-    throw new Error(`Authorization failed. Status: ${authResponse.status()}`)
-  }
+  expect(authResponse.status()).toBe(StatusCodes.OK)
   return await authResponse.text()
 }
 
